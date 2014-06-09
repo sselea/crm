@@ -49,6 +49,7 @@ class Crm
 	end
 
 	def add_new_contact
+		puts ""
 		print "Enter First Name: "
 		first_name = gets.chomp
 		print "Enter Last Name: "
@@ -61,40 +62,30 @@ class Crm
 	end
 
 	def modify_existing_contact 
-		@database.print_contact
-		puts "Choose one contact by their id: "
-		selected_id=gets.to_i
-		found = @database.is_in_list(selected_id)
-		if found == true then
-		puts "Which attribute do you want to modify: "
-		puts ""
-		puts "[1] First Name"
-		puts "[2] Last Name"
-		puts "[3] Email"
-		puts "[4] Notes"
-		puts "[5] ID"
-		puts ""
-		attr_to_modify=gets.chomp.to_i
-		puts "Please enter new value for the attribute"	
-		new_value=gets.chomp.to_s
-		@database.modify_attr(selected_id,attr_to_modify,new_value)
+		selected_id = which_attr_to_display_modify
+		if selected_id 
+			attr_to_modify=gets.chomp.to_i
+			puts ""
+			puts "Please enter new value for the attribute"	
+			puts ""
+			new_value=gets.chomp.to_s
+			@database.modify_attr(selected_id,attr_to_modify,new_value)
 		else
-		puts "Contact not found"
+			puts "Contact not found"
 		end
 		
 	end
 
 	def delete_account
 		@database.print_contact
-		puts "Choose one contact by their id: "
+		print"Choose one contact by their id: "
 		selected_id=gets.to_i
 		found = @database.is_in_list(selected_id)
-		if found == true then
+		if found
 			@database.delete_account(selected_id)
 			@database.print_contact
 		else
 			puts "Contact not found"
-
 		end
 	end
 
@@ -103,22 +94,33 @@ class Crm
 	end
 
 	def display_attribute
-		@database.print_contact
-		puts "Choose one contact by their id: "
-		selected_id=gets.to_i
-		found = @database.is_in_list(selected_id)
-		if found == true then
-		puts "Which attribute do you want to diplay: "
-		puts ""
-		puts "[1] First Name"
-		puts "[2] Last Name"
-		puts "[3] Email"
-		puts "[4] Notes"
-		puts "[5] ID"
-		puts ""
-		attr_to_display=gets.chomp.to_i
-		puts @database.display_attr(selected_id,attr_to_display)
+		selected_id=which_attr_to_display_modify
+		if selected_id
+			attr_to_display=gets.chomp.to_i
+			puts @database.display_attr(selected_id,attr_to_display)
 		end
+	end
+
+	def which_attr_to_display_modify
+		@database.print_contact
+		print"Choose one contact by their id: "
+		selected_id=gets.to_i
+		puts ""
+		if @database.is_in_list(selected_id)
+			puts ""
+	 		puts "Which attribute do you want to diplay/change: "
+			puts ""
+			puts "[1] First Name"
+			puts "[2] Last Name"
+			puts "[3] Email"
+			puts "[4] Notes"
+			puts "[5] ID"
+			puts ""
+			return selected_id
+		else
+			puts "Contact not found"
+		end
+
 	end
 
 end 
